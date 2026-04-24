@@ -1,0 +1,83 @@
+.callout {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid;
+  font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+}
+
+.callout--info {
+  background: rgba(21, 93, 252, 0.1);
+  border-left-color: #155DFC;
+  color: #93C5FD;
+}
+
+.callout--info .callout__icon {
+  color: #155DFC;
+}
+
+.callout--warning {
+  background: #FFFBEB;
+  border-left-color: #D97706;
+  color: #78350F;
+}
+
+.callout--warning .callout__icon {
+  color: #D97706;
+}
+
+.callout--error {
+  background: rgba(239, 68, 68, 0.1);
+  border-left-color: #EF4444;
+  color: #FCA5A5;
+}
+
+.callout--error .callout__icon {
+  color: #EF4444;
+}
+
+.callout--success {
+  background: rgba(16, 185, 129, 0.1);
+  border-left-color: #10B981;
+  color: #6EE7B7;
+}
+
+.callout--success .callout__icon {
+  color: #10B981;
+}
+
+.callout--instruction {
+  background: #FFF7ED;
+  border-left-color: #EA580C;
+  color: #7C2D12;
+}
+
+.callout--instruction .callout__icon {
+  color: #EA580C;
+}
+
+.callout__icon {
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}
+
+.callout__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.callout__title {
+  font-weight: 600;
+  font-size: 0.9375rem;
+  margin-bottom: 0.25rem;
+  color: inherit;
+}
+
+.callout__message {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: inherit;
+  opacity: 0.9;
+}

@@ -6,6 +6,8 @@
   text-align: center;
   transition: all 0.2s ease;
   position: relative;
+    font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
 }
 
 .flywheel-file-upload:hover {

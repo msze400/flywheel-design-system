@@ -2,20 +2,103 @@
   display: inline-block;
   cursor: pointer;
   border: 0;
-  border-radius: 3em;
+  border-radius: 6px;
   font-weight: 700;
   line-height: 1;
   font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  letter-spacing: 0.5px;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease, opacity 0.15s ease;
 }
+
+/* Primary button - same blue for both dark and light mode */
 .storybook-button--primary {
-  background-color: #555ab9;
-  color: white;
+  background-color: #0066FF;
+  color: #ffffff;
 }
+
+.storybook-button--primary:hover {
+  background-color: #0052CC;
+}
+
+.storybook-button--primary:focus,
+.storybook-button--primary:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.4);
+}
+
+.storybook-button--primary:active {
+  background-color: #0047B3;
+  transform: translateY(1px);
+}
+
+.storybook-button--primary:disabled,
+.storybook-button--primary.storybook-button--disabled {
+  background-color: #99C2FF;
+  color: #ffffff;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Secondary button - light mode (default): light gray bg, dark text */
 .storybook-button--secondary {
-  box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 0px 1px inset;
-  background-color: transparent;
-  color: #333;
+  background-color: #D1D5DB;
+  color: #374151;
+  box-shadow: none;
 }
+
+.storybook-button--secondary:hover {
+  background-color: #C4C9D1;
+}
+
+.storybook-button--secondary:focus,
+.storybook-button--secondary:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(156, 163, 175, 0.4);
+}
+
+.storybook-button--secondary:active {
+  background-color: #B8BCC4;
+  transform: translateY(1px);
+}
+
+.storybook-button--secondary:disabled,
+.storybook-button--secondary.storybook-button--disabled {
+  background-color: #E5E7EB;
+  color: #9CA3AF;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Secondary button - dark mode: dark gray bg, light text */
+.storybook-button--secondary.storybook-button--dark {
+  background-color: #374151;
+  color: #9CA3AF;
+  box-shadow: none;
+}
+
+.storybook-button--secondary.storybook-button--dark:hover {
+  background-color: #4B5563;
+}
+
+.storybook-button--secondary.storybook-button--dark:focus,
+.storybook-button--secondary.storybook-button--dark:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(75, 85, 99, 0.4);
+}
+
+.storybook-button--secondary.storybook-button--dark:active {
+  background-color: #1F2937;
+  transform: translateY(1px);
+}
+
+.storybook-button--secondary.storybook-button--dark:disabled,
+.storybook-button--secondary.storybook-button--dark.storybook-button--disabled {
+  background-color: #1F2937;
+  color: #6B7280;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 .storybook-button--small {
   padding: 10px 16px;
   font-size: 12px;

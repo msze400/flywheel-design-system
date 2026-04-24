@@ -1,0 +1,72 @@
+.progress-bar {
+  width: 100%;
+  font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+}
+
+.progress-bar__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.progress-bar__label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #E5E7EB;
+}
+
+.progress-bar__value {
+  font-size: 0.875rem;
+  color: #9CA3AF;
+}
+
+.progress-bar__track {
+  width: 100%;
+  background: #374151;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progress-bar--small .progress-bar__track {
+  height: 4px;
+}
+
+.progress-bar--medium .progress-bar__track {
+  height: 8px;
+}
+
+.progress-bar--large .progress-bar__track {
+  height: 12px;
+}
+
+.progress-bar__fill {
+  height: 100%;
+  background: linear-gradient(90deg, #155DFC, #3B82F6);
+  border-radius: 9999px;
+  transition: width 0.3s ease;
+}
+
+.progress-bar__fill--complete {
+  background: linear-gradient(90deg, #10B981, #34D399);
+}
+
+.progress-bar__fill--warning {
+  background: linear-gradient(90deg, #F59E0B, #FBBF24);
+}
+
+.progress-bar__fill--error {
+  background: linear-gradient(90deg, #EF4444, #F87171);
+}
+
+/* Small text adjustments */
+.progress-bar--small .progress-bar__label,
+.progress-bar--small .progress-bar__value {
+  font-size: 0.75rem;
+}
+
+.progress-bar--large .progress-bar__label,
+.progress-bar--large .progress-bar__value {
+  font-size: 1rem;
+}

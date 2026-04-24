@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { ButtonComponent } from '../button/button.component';
 
 export interface UploadedFile {
   name: string;
@@ -11,7 +12,7 @@ export interface UploadedFile {
 @Component({
   selector: 'flywheel-file-upload',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ButtonComponent],
   template: `
     <div
       class="flywheel-file-upload"
@@ -38,25 +39,23 @@ export interface UploadedFile {
         </div>
         <p class="flywheel-file-upload__title">{{ title }}</p>
         <p class="flywheel-file-upload__description">{{ description }}</p>
-        <button
-          type="button"
-          class="flywheel-file-upload__button"
-          (click)="fileInput.click()"
-        >
-          {{ buttonLabel }}
-        </button>
+        <storybook-button
+          [primary]="true"
+          [label]="buttonLabel"
+          size="medium"
+          (onClick)="fileInput.click()"
+        ></storybook-button>
       </div>
       <div *ngIf="files.length > 0" class="flywheel-file-upload__file-list">
         <div *ngFor="let file of files" class="flywheel-file-upload__file-item">
           <span class="flywheel-file-upload__file-name">{{ file.name }}</span>
           <span class="flywheel-file-upload__file-size">{{ formatFileSize(file.size) }}</span>
-          <button
-            type="button"
-            class="flywheel-file-upload__remove-button"
-            (click)="removeFile(file)"
-          >
-            ✕
-          </button>
+          <storybook-button
+            [primary]="false"
+            size="small"
+            label="✕"
+            (onClick)="removeFile(file)"
+          ></storybook-button>
         </div>
       </div>
     </div>

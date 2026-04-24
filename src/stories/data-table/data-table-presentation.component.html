@@ -1,0 +1,228 @@
+<div class="fw-data-table-wrapper">
+
+  <!-- Loading overlay -->
+  <div *ngIf="isLoading" class="fw-data-table__loading-overlay" aria-live="polite" aria-label="Loading">
+    <span class="fw-data-table__loading-spinner"></span>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="fw-data-table__toolbar">
+    <div class="fw-data-table__toolbar-actions">
+      <button class="fw-data-table__toolbar-btn" (click)="onActionsClick()">
+        Actions
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </button>
+      <button class="fw-data-table__toolbar-btn" (click)="allGroupsClick.emit()">
+        All Groups
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </button>
+      <button class="fw-data-table__toolbar-btn" (click)="filtersClick.emit()">
+        Advanced Filters
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="fw-data-table__view-toggle">
+      <button
+        class="fw-data-table__view-btn"
+        [class.fw-data-table__view-btn--active]="activeView === 'table'"
+        (click)="onViewChange('table')"
+        aria-label="Table view">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+          <line x1="3" y1="9" x2="21" y2="9" />
+          <line x1="3" y1="15" x2="21" y2="15" />
+          <line x1="9" y1="3" x2="9" y2="21" />
+        </svg>
+      </button>
+      <button
+        class="fw-data-table__view-btn"
+        [class.fw-data-table__view-btn--active]="activeView === 'grid'"
+        (click)="onViewChange('grid')"
+        aria-label="Grid view">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7" />
+          <rect x="14" y="3" width="7" height="7" />
+          <rect x="3" y="14" width="7" height="7" />
+          <rect x="14" y="14" width="7" height="7" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="fw-data-table__scroll-container">
+    <table class="fw-data-table__table" role="grid">
+      <thead>
+        <!-- Column header row -->
+        <tr class="fw-data-table__header-row">
+          <th *ngIf="showCheckboxes" class="fw-data-table__th fw-data-table__th--checkbox" scope="col">
+            <input
+              type="checkbox"
+              class="fw-data-table__checkbox"
+              [checked]="isAllSelected"
+              [indeterminate]="isIndeterminate"
+              (change)="onSelectAll()"
+              aria-label="Select all rows" />
+          </th>
+          <th
+            *ngFor="let col of columns"
+            class="fw-data-table__th"
+            [class.fw-data-table__th--sortable]="col.sortable && allowSort"
+            scope="col"
+            (click)="col.sortable && allowSort && onSort(col.key)">
+            <span class="fw-data-table__th-content">
+              {{ col.label }}
+              <span *ngIf="col.sortable && allowSort" class="fw-data-table__sort-icon"
+                [class.fw-data-table__sort-icon--asc]="getSortIcon(col.key) === 'asc'"
+                [class.fw-data-table__sort-icon--desc]="getSortIcon(col.key) === 'desc'">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 3 18 9" />
+                  <polyline points="6 15 12 21 18 15" />
+                </svg>
+              </span>
+            </span>
+          </th>
+          <th class="fw-data-table__th fw-data-table__th--action" scope="col"></th>
+        </tr>
+
+        <!-- Filter inputs row (shown when showFilters=true and at least one column is filterable) -->
+        <tr *ngIf="showFilters" class="fw-data-table__filter-row">
+          <th *ngIf="showCheckboxes" class="fw-data-table__th fw-data-table__th--checkbox"></th>
+          <th *ngFor="let col of columns" class="fw-data-table__th fw-data-table__th--filter">
+            <input
+              *ngIf="col.filterable"
+              type="text"
+              class="fw-data-table__filter-input"
+              [value]="getFilterValue(col.key)"
+              (input)="onFilterChange(col.key, $any($event.target).value)"
+              [attr.placeholder]="'Filter ' + col.label"
+              [attr.aria-label]="'Filter by ' + col.label" />
+          </th>
+          <th class="fw-data-table__th fw-data-table__th--action"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let row of rows; trackBy: trackById"
+          class="fw-data-table__row"
+          [class.fw-data-table__row--selected]="isSelected(row['id'])"
+          (click)="onRowSelect(row['id'])">
+
+          <!-- Checkbox cell -->
+          <td *ngIf="showCheckboxes" class="fw-data-table__td fw-data-table__td--checkbox"
+            (click)="$event.stopPropagation()">
+            <input
+              type="checkbox"
+              class="fw-data-table__checkbox"
+              [checked]="isSelected(row['id'])"
+              (change)="onRowSelect(row['id'])"
+              [attr.aria-label]="'Select row ' + row['id']" />
+          </td>
+
+          <!--
+            Data cells — uses a projected ng-template if one is registered for this column key,
+            otherwise falls back to the plain text value.
+
+            Custom template usage in parent:
+              <ng-template flywheelCellDef="subject" let-value let-row="row">
+                <a [routerLink]="['/subjects', row.id]">{{ value }}</a>
+              </ng-template>
+          -->
+          <td *ngFor="let col of columns" class="fw-data-table__td">
+            <ng-container *ngIf="getCellTemplate(col.key) as tpl; else defaultCell">
+              <ng-container
+                [ngTemplateOutlet]="tpl"
+                [ngTemplateOutletContext]="{ $implicit: row[col.key], row: row }">
+              </ng-container>
+            </ng-container>
+            <ng-template #defaultCell>{{ row[col.key] }}</ng-template>
+          </td>
+
+          <!-- Row action button -->
+          <td class="fw-data-table__td fw-data-table__td--action">
+            <button class="fw-data-table__row-action-btn" aria-label="Row actions"
+              (click)="$event.stopPropagation()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="5" r="1" /><circle cx="12" cy="12" r="1" /><circle cx="12" cy="19" r="1" />
+              </svg>
+            </button>
+          </td>
+        </tr>
+
+        <!-- Empty state -->
+        <tr *ngIf="rows.length === 0 && !isLoading">
+          <td [attr.colspan]="columns.length + (showCheckboxes ? 2 : 1)" class="fw-data-table__empty-cell">
+            No records found.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination footer -->
+  <div class="fw-data-table__pagination" *ngIf="totalPages > 1 || totalCount > 0">
+    <span class="fw-data-table__pagination-summary">
+      {{ (pagination.currentPage - 1) * pagination.pageSize + 1 }}–{{ pagination.currentPage * pagination.pageSize > totalCount ? totalCount : pagination.currentPage * pagination.pageSize }} of {{ totalCount }}
+    </span>
+
+    <div class="fw-data-table__pagination-controls">
+      <button
+        class="fw-data-table__page-btn"
+        [disabled]="pagination.currentPage === 1"
+        (click)="onPageChange(pagination.currentPage - 1)"
+        aria-label="Previous page">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
+      </button>
+
+      <button
+        *ngFor="let page of pageNumbers"
+        class="fw-data-table__page-btn fw-data-table__page-btn--number"
+        [class.fw-data-table__page-btn--active]="page === pagination.currentPage"
+        (click)="onPageChange(page)"
+        [attr.aria-label]="'Page ' + page"
+        [attr.aria-current]="page === pagination.currentPage ? 'page' : null">
+        {{ page }}
+      </button>
+
+      <button
+        class="fw-data-table__page-btn"
+        [disabled]="pagination.currentPage === totalPages"
+        (click)="onPageChange(pagination.currentPage + 1)"
+        aria-label="Next page">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="fw-data-table__page-size">
+      <label class="fw-data-table__page-size-label" for="fw-page-size">Rows:</label>
+      <select
+        id="fw-page-size"
+        class="fw-data-table__page-size-select"
+        [value]="pagination.pageSize"
+        (change)="onPageSizeChange(+$any($event.target).value)">
+        <option *ngFor="let option of pageSizeOptions" [value]="option">{{ option }}</option>
+      </select>
+    </div>
+  </div>
+
+</div>

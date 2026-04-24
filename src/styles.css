@@ -1,1 +1,13 @@
+:root {
+	--color-primary: #155DFC;
+	--color-primary-contrast: #ffffff;
+    --color-hover: #1447E6;
+	--color-pruim: #333333;
+	--color-secondary-contrast: #ffffff;
+	--color-secondary-border: rgba(0, 0, 0, 0.15);
+	--color-secondary-border-inverse: rgba(255, 255, 255, 0.6);
+	--color-header-background: rgba(6, 4, 35, 0.85);
+	--color-text-default: #333333;
+}
+
 /* You can add global styles to this file, and also import other style files */

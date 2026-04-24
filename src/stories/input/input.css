@@ -1,0 +1,157 @@
+:host {
+  --input-radius: 14px;
+  --input-border-width: 3px;
+  --input-shadow-focus: 0 0 0 3px rgba(0, 180, 255, 0.5), 0 0 16px rgba(0, 180, 255, 0.35);
+  --input-shadow-pressed: 0 0 0 2px rgba(0, 180, 255, 0.4);
+  --input-dark-bg: #1a1a1a;
+  --input-dark-border: #2a2a2a;
+  --input-dark-text: #f5f5f5;
+  --input-dark-placeholder: #7a7a7a;
+  --input-light-bg: #ffffff;
+  --input-light-border: #d9d9e2;
+  --input-light-text: #222222;
+  --input-light-placeholder: #8f8fa3;
+  --input-disabled-opacity: 0.48;
+  --input-accent: #00b4ff;
+}
+
+.flywheel-input {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.flywheel-input__label,
+.flywheel-input__helper {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.flywheel-input__label {
+  font-weight: 700;
+}
+
+.flywheel-input__helper {
+  opacity: 0.8;
+}
+
+.flywheel-input__control {
+  position: relative;
+}
+
+.flywheel-input__field {
+  width: 100%;
+  border-radius: 14px;
+  border: 3px solid transparent;
+  outline: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease,
+    color 0.18s ease, transform 0.12s ease;
+  font-family: inherit;
+}
+
+.flywheel-input--small .flywheel-input__field {
+  min-width: 160px;
+  min-height: 36px;
+  padding: 0 12px;
+  font-size: 13px;
+}
+
+.flywheel-input--medium .flywheel-input__field {
+  min-width: 200px;
+  min-height: 42px;
+  padding: 0 14px;
+  font-size: 14px;
+}
+
+.flywheel-input--large .flywheel-input__field {
+  min-width: 320px;
+  min-height: 56px;
+  padding: 0 20px;
+  font-size: 16px;
+}
+
+.flywheel-input--contained.flywheel-input--dark .flywheel-input__field {
+  background: #1a1a1a;
+  border-color: #2a2a2a;
+  color: #f5f5f5;
+}
+
+.flywheel-input--contained.flywheel-input--dark .flywheel-input__field::placeholder {
+  color: #7a7a7a;
+}
+
+.flywheel-input--contained.flywheel-input--light .flywheel-input__field {
+  background: #ffffff;
+  border-color: #d9d9e2;
+  color: #222222;
+}
+
+.flywheel-input--contained.flywheel-input--light .flywheel-input__field::placeholder {
+  color: #8f8fa3;
+}
+
+.flywheel-input--outline.flywheel-input--dark .flywheel-input__field {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.32);
+  color: #f5f5f5;
+}
+
+.flywheel-input--outline.flywheel-input--dark .flywheel-input__field::placeholder {
+  color: #7a7a7a;
+}
+
+.flywheel-input--outline.flywheel-input--light .flywheel-input__field {
+  background: transparent;
+  border-color: #d9d9e2;
+  color: #222222;
+}
+
+.flywheel-input--outline.flywheel-input--light .flywheel-input__field::placeholder {
+  color: #8f8fa3;
+}
+
+.flywheel-input--focused .flywheel-input__field {
+  border-color: #00b4ff;
+  box-shadow: 0 0 0 3px rgba(0, 180, 255, 0.5), 0 0 16px rgba(0, 180, 255, 0.35);
+}
+
+.flywheel-input--focused.flywheel-input--dark .flywheel-input__field {
+  background: #1a1a1a;
+}
+
+.flywheel-input--pressed .flywheel-input__field {
+  border-color: #00b4ff;
+  box-shadow: 0 0 0 2px rgba(0, 180, 255, 0.4);
+  transform: translateY(1px);
+}
+
+.flywheel-input--disabled {
+  opacity: 0.48;
+}
+
+.flywheel-input--disabled .flywheel-input__field {
+  cursor: not-allowed;
+}
+
+.flywheel-input--dark {
+  color: #f5f5f5;
+}
+
+.flywheel-input--light {
+  color: #2d2d35;
+}
+
+/* Ensure real focus receives same visible outline as the focused state class */
+.flywheel-input__field:focus,
+.flywheel-input__field:focus-visible {
+  border-color: #00b4ff;
+  box-shadow: 0 0 0 3px rgba(0, 180, 255, 0.5), 0 0 16px rgba(0, 180, 255, 0.35);
+  outline: none;
+}
+
+/* Stronger specificity to ensure dark contained inputs render with black background */
+.flywheel-input.flywheel-input--contained.flywheel-input--dark .flywheel-input__field {
+  background: #1a1a1a !important;
+  color: #f5f5f5 !important;
+}

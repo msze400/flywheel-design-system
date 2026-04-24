@@ -10,6 +10,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   (click)="onClick.emit($event)"
   [ngClass]="classes"
   [ngStyle]="{ 'background-color': backgroundColor }"
+  [disabled]="disabled"
 >
   {{ label }}
 </button>`,
@@ -19,6 +20,10 @@ export class ButtonComponent {
   /** Is this the principal call to action on the page? */
   @Input()
   primary = false;
+
+  /** Use dark mode styling (for dark backgrounds) */
+  @Input()
+  darkMode = false;
 
   /** What background color to use */
   @Input()
@@ -36,6 +41,10 @@ export class ButtonComponent {
   @Input()
   label = 'Button';
 
+  /** Disable the button */
+  @Input()
+  disabled = false;
+
   /** Optional click handler */
   @Output()
   onClick = new EventEmitter<Event>();
@@ -43,6 +52,10 @@ export class ButtonComponent {
   public get classes(): string[] {
     const mode = this.primary ? 'storybook-button--primary' : 'storybook-button--secondary';
 
-    return ['storybook-button', `storybook-button--${this.size}`, mode];
+    const darkModeClass = this.darkMode ? 'storybook-button--dark' : null;
+
+    const disabledClass = this.disabled ? 'storybook-button--disabled' : null;
+
+    return ['storybook-button', `storybook-button--${this.size}`, mode, ...(darkModeClass ? [darkModeClass] : []), ...(disabledClass ? [disabledClass] : [])];
   }
 }
